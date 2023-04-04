@@ -1,0 +1,11 @@
+<rml>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="./style.css"/>
+    </head>
+    <body>
+    <img src="./assets/raylib_180x180.png"/>
+    <p>This is a raylib Demo</p>
+    <a>This is a test</a>
+    </body>
+</rml>

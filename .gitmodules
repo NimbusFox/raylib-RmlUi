@@ -1,0 +1,6 @@
+[submodule "dependencies/RmlUi"]
+	path = dependencies/RmlUi
+	url = https://github.com/mikke89/RmlUi.git
+[submodule "dependencies/raylib"]
+	path = dependencies/raylib
+	url = https://github.com/raysan5/raylib.git

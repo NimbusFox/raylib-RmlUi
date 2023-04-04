@@ -4,19 +4,19 @@
 class RaylibRmlUi {
 private:
 public:
-	static bool Initialize(int windowWidth, int windowHeight);
+static bool Initialize(int windowWidth, int windowHeight);
 
-	static void DeInitialize();
+static void DeInitialize();
 
-	static void EnableDebugger();
+static void EnableDebugger();
 
-	static void DisableDebugger();
+static void DisableDebugger();
 
-	static void ToggleDebugger();
+static void ToggleDebugger();
 
-	static void Update();
+static void Update();
 
-	static void Draw();
+static void Draw();
 };
 
 #endif //RMLUI_EXAMPLE_RAYLIBRMLUI_H

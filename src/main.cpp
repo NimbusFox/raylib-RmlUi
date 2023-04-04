@@ -2,26 +2,26 @@
 #include "raylibRmlUi.h"
 
 int main() {
-	SetConfigFlags(FLAG_VSYNC_HINT);
-	InitWindow(1280, 720, "Raylib - RmlUi example");
-	SetTargetFPS(500);
+    SetConfigFlags(FLAG_VSYNC_HINT);
+    InitWindow(1280, 720, "Raylib - RmlUi example");
+    SetTargetFPS(500);
 
-	RaylibRmlUi::Initialize(1280, 720);
+    RaylibRmlUi::Initialize(1280, 720);
 
-	while(!WindowShouldClose()) {
-		RaylibRmlUi::Update();
-		BeginDrawing();
+    while (!WindowShouldClose()) {
+        RaylibRmlUi::Update();
+        BeginDrawing();
 
-		ClearBackground(RAYWHITE);
+        ClearBackground(RAYWHITE);
 
-		RaylibRmlUi::Draw();
+        RaylibRmlUi::Draw();
 
-		DrawFPS(10, 10);
+        DrawFPS(10, 10);
 
-		EndDrawing();
-	}
+        EndDrawing();
+    }
 
-	RaylibRmlUi::DeInitialize();
+    RaylibRmlUi::DeInitialize();
 
-	return 0;
+    return 0;
 }

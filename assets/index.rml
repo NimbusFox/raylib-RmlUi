@@ -1,11 +1,11 @@
 <rml>
     <head>
-        <title></title>
-        <link rel="stylesheet" href="./style.css"/>
+        <title>Demo</title>
+        <link type="text/css" rel="stylesheet" href="style.css"/>
     </head>
     <body>
-    <img src="./assets/raylib_180x180.png"/>
-    <p>This is a raylib Demo</p>
-    <a>This is a test</a>
+    <img src="raylib_180x180.png"/>
+    <div>This is a raylib Demo</div>
+    <div>&lt;a/&gt; is not a valid tag under rml</div>
     </body>
 </rml>

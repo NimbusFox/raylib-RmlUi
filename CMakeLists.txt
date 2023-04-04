@@ -13,15 +13,14 @@ include_directories(
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/)
 
-file(COPY ${PROJECT_SOURCE_DIR}/assets DESTINATION ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
-
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/raylib)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/RmlUi)
 
 set(rmlUiFiles
-        src/raylibRmlUi.cpp
-        src/raylibRenderInterface.cpp
-        src/raylibSystemInterface.cpp
+    src/raylibFileInterface.cpp
+    src/raylibRmlUi.cpp
+    src/raylibRenderInterface.cpp
+    src/raylibSystemInterface.cpp
     )
 
 add_executable(RmlUI_Example src/main.cpp ${rmlUiFiles})

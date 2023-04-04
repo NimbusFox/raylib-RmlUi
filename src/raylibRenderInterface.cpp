@@ -1,4 +1,5 @@
 #include "raylibRenderInterface.h"
+#include "raylibFileInterface.h"
 #include "raylib.h"
 
 void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) {
@@ -35,11 +36,12 @@ void RaylibRenderInterface::SetScissorRegion(int x, int y, int width, int height
 }
 
 bool RaylibRenderInterface::LoadTexture(Rml::TextureHandle &texture_handle, Rml::Vector2i &texture_dimensions, const Rml::String &source) {
-	if (!FileExists(source.c_str())) {
+	auto path = RaylibFileInterface::ParsePath(source);
+	if (!FileExists(path.c_str())) {
 		return false;
 	}
 
-	auto texture = ::LoadTexture(source.c_str());
+	auto texture = ::LoadTexture(path.c_str());
 
 	if (texture.id == 0) {
 		return false;

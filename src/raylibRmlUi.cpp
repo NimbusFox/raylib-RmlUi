@@ -1,14 +1,18 @@
 #include "raylibRmlUi.h"
+#include "raylibFileInterface.h"
 #include "raylibSystemInterface.h"
 #include "raylibRenderInterface.h"
 #include "raylib.h"
 
+RaylibFileInterface fileInterface;
 RaylibRenderInterface renderInterface;
 RaylibSystemInterface systemInterface;
+
 Rml::Context* context;
 std::unordered_map<std::string, Rml::ElementDocument*> documents;
 
 bool RaylibRmlUi::Initialize(int windowWidth, int windowHeight) {
+	Rml::SetFileInterface(&fileInterface);
 	Rml::SetRenderInterface(&renderInterface);
 	Rml::SetSystemInterface(&systemInterface);
 
@@ -23,11 +27,13 @@ bool RaylibRmlUi::Initialize(int windowWidth, int windowHeight) {
 
 	Rml::Debugger::Initialise(context);
 
-	Rml::LoadFontFace("./assets/UbuntuMono-Regular.ttf");
+	Rml::LoadFontFace("../../assets/UbuntuMono-Regular.ttf");
 
-	documents["index"] = context->LoadDocument("./assets/index.rml");
+	documents["index"] = context->LoadDocument("../../assets/index.rml");
 
 	documents["index"]->Show();
+
+	return true;
 }
 
 void RaylibRmlUi::DeInitialize() {

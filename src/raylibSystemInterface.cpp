@@ -27,4 +27,6 @@ bool RaylibSystemInterface::LogMessage(Rml::Log::Type type, const Rml::String &m
 		case Rml::Log::LT_MAX:
 			break;
 	}
+
+	return true;
 }

@@ -7,6 +7,7 @@ int main() {
     SetTargetFPS(500);
 
     RaylibRmlUi::Initialize(1280, 720);
+    RaylibRmlUi::EnableDebugger();
 
     while (!WindowShouldClose()) {
         RaylibRmlUi::Update();

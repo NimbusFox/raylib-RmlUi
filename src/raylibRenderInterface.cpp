@@ -3,6 +3,13 @@
 #include "raylib.h"
 #include "rlgl.h"
 
+void RenderTriangle(Rml::Vertex &vertex, const Rml::Vector2f &translation) {
+    auto c = Color{vertex.colour.red, vertex.colour.green, vertex.colour.blue, vertex.colour.alpha};
+    rlColor4ub(c.r, c.g, c.b, c.a);
+    rlTexCoord2f(vertex.tex_coord.x, vertex.tex_coord.y);
+    rlVertex2f(vertex.position.x + translation.x, vertex.position.y + translation.y);
+}
+
 void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) {
     if (texture == 0) {
         return;
@@ -13,36 +20,40 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
         return;
     }
 
-    for (auto i = 0 ; i < num_indices ; i += 6) {
-        auto topLeft = vertices[indices[i]];
-        topLeft.position.x += translation.x;
-        topLeft.position.y += translation.y;
-        auto bottomRight = vertices[indices[i + 5]];
-        bottomRight.position.x += translation.x;
-        bottomRight.position.y += translation.y;
 
-        rlSetTexture(target.id);
-        rlBegin(RL_QUADS);
-
-        rlColor4ub(topLeft.colour.red, topLeft.colour.green, topLeft.colour.blue, topLeft.colour.alpha);
-        rlNormal3f(0.0f, 0.0f, 1.0f);
-
-        rlTexCoord2f(topLeft.tex_coord.x, topLeft.tex_coord.y);
-        rlVertex2f(topLeft.position.x, topLeft.position.y);
-
-        rlTexCoord2f(topLeft.tex_coord.x, bottomRight.tex_coord.y);
-        rlVertex2f(topLeft.position.x, bottomRight.position.y);
-
-        rlTexCoord2f(bottomRight.tex_coord.x, bottomRight.tex_coord.y);
-        rlVertex2f(bottomRight.position.x, bottomRight.position.y);
-
-        rlTexCoord2f(bottomRight.tex_coord.x, topLeft.tex_coord.y);
-        rlVertex2f(bottomRight.position.x, topLeft.position.y);
-
-        rlEnd();
-
-        rlSetTexture(0);
+    if (num_indices < 3) {
+        return;
     }
+
+    rlDrawRenderBatchActive();
+    rlDisableBackfaceCulling();
+
+    rlBegin(RL_TRIANGLES);
+    rlSetTexture(target.id);
+
+    for (unsigned int i = 0; i <= (num_indices - 3); i+=3) {
+        if (rlCheckRenderBatchLimit(3)) {
+            rlBegin(RL_TRIANGLES);
+            rlSetTexture(target.id);
+        }
+
+        auto indexA = indices[i];
+        auto indexB = indices[i + 1];
+        auto indexC = indices[i + 2];
+
+        auto vertexA = vertices[indexA];
+        auto vertexB = vertices[indexB];
+        auto vertexC = vertices[indexC];
+
+        RenderTriangle(vertexA, translation);
+        RenderTriangle(vertexB, translation);
+        RenderTriangle(vertexC, translation);
+    }
+    rlEnd();
+    rlSetTexture(0);
+
+    rlDisableScissorTest();
+    rlEnableBackfaceCulling();
 }
 
 void RaylibRenderInterface::EnableScissorRegion(bool enable) {

@@ -36,3 +36,7 @@ cmake --build ./build -- -j $(nproc)
 
 # Run
 Inside the project folder there should now be a bin folder if the compile was successful. Inside that should be a Debug folder. Then run RmlUI_Example(.exe) to see the simple demo
+
+# Example
+
+![image](https://user-images.githubusercontent.com/7228476/229943439-c7ba003e-3041-4ff2-a063-9866c226feda.png)

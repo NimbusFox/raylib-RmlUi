@@ -1,6 +1,7 @@
 #include "raylibRenderInterface.h"
 #include "raylibFileInterface.h"
 #include "raylib.h"
+#include "rlgl.h"
 
 void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) {
     if (texture == 0) {
@@ -8,20 +9,39 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
     }
     auto target = *(Texture2D*)texture;
 
+    if (target.id == 0) {
+        return;
+    }
+
     for (auto i = 0 ; i < num_indices ; i += 6) {
         auto topLeft = vertices[indices[i]];
+        topLeft.position.x += translation.x;
+        topLeft.position.y += translation.y;
         auto bottomRight = vertices[indices[i + 5]];
+        bottomRight.position.x += translation.x;
+        bottomRight.position.y += translation.y;
 
-        auto topLeftTarget = Vector2{ topLeft.tex_coord.x * target.width, topLeft.tex_coord.y * target.height };
-        auto bottomRightTarget = Vector2{ bottomRight.tex_coord.x * target.width, bottomRight.tex_coord.y * target.height };
+        rlSetTexture(target.id);
+        rlBegin(RL_QUADS);
 
-        DrawTexturePro(target,
-                Rectangle{ topLeftTarget.x, topLeftTarget.y, bottomRightTarget.x - topLeftTarget.x, bottomRightTarget.y - topLeftTarget.y },
-                Rectangle{ topLeft.position.x + translation.x, topLeft.position.y + translation.y, bottomRight.position.x - topLeft.position.x,
-                           bottomRight.position.y - topLeft.position.y },
-                Vector2{ 0, 0 },
-                0.0f,
-                Color{ topLeft.colour.red, topLeft.colour.green, topLeft.colour.blue, topLeft.colour.alpha });
+        rlColor4ub(topLeft.colour.red, topLeft.colour.green, topLeft.colour.blue, topLeft.colour.alpha);
+        rlNormal3f(0.0f, 0.0f, 1.0f);
+
+        rlTexCoord2f(topLeft.tex_coord.x, topLeft.tex_coord.y);
+        rlVertex2f(topLeft.position.x, topLeft.position.y);
+
+        rlTexCoord2f(topLeft.tex_coord.x, bottomRight.tex_coord.y);
+        rlVertex2f(topLeft.position.x, bottomRight.position.y);
+
+        rlTexCoord2f(bottomRight.tex_coord.x, bottomRight.tex_coord.y);
+        rlVertex2f(bottomRight.position.x, bottomRight.position.y);
+
+        rlTexCoord2f(bottomRight.tex_coord.x, topLeft.tex_coord.y);
+        rlVertex2f(bottomRight.position.x, topLeft.position.y);
+
+        rlEnd();
+
+        rlSetTexture(0);
     }
 }
 

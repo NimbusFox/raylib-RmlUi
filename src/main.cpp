@@ -1,28 +1,42 @@
 #include "raylib.h"
-#include "raylibRmlUi.h"
+
+#include "example.h"
 
 int main() {
-    SetConfigFlags(FLAG_VSYNC_HINT);
-    InitWindow(1280, 720, "Raylib - RmlUi example");
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
+    auto size = Example::GetWindowSize();
+    InitWindow(size.x, size.y, TextFormat("Raylib RmlUi %s", Example::GetWindowTitle()));
     SetTargetFPS(500);
 
-    RaylibRmlUi::Initialize(1280, 720);
-    RaylibRmlUi::EnableDebugger();
+    SetExitKey(0);
 
-    while (!WindowShouldClose()) {
-        RaylibRmlUi::Update();
+    Example::Initialize();
+
+    while (Example::RunProgram()) {
+        if (WindowShouldClose()) {
+            Example::StopProgram();
+            break;
+        }
+        Example::Update(GetFrameTime());
+
+        if (IsKeyPressed(KEY_F8)) {
+            Example::ToggleDebugger();
+        }
+
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        RaylibRmlUi::Draw();
+        Example::Render();
 
         DrawFPS(10, 10);
 
         EndDrawing();
     }
 
-    RaylibRmlUi::DeInitialize();
+    Example::DeInitialize();
+
+    CloseWindow();
 
     return 0;
 }

@@ -1,42 +1,29 @@
-# Raylib + RmlUi Example(s)
+# Raylib + RmlUi
+[Raylib](https://github.com/raysan5/raylib) is a thin wrapper around OpenGL using the inbuilt rlgl.
 
-This is a quick example of how to integrate RmlUi into raylib
+[RmlUi](https://github.com/mikke89/RmlUi) is a XHTML 1.0 / CSS 2 renderer with ease of interaction with the elements.
 
-Right now it only shows how to add:
-* Fonts
-* Html (rml files)
-* Stylesheets
-* Images
+# Examples
+* [ ] Basic
+    * [ ] Animation 99% done
+    * [ ] Benchmark
+    * [ ] Bitmapfont
+    * [ ] Customlog
+    * [ ] Databinding
+    * [ ] Demo
+    * [ ] Drag
+    * [ ] LoadDocuments
+    * [ ] Lottie
+    * [ ] SVG
+    * [ ] Transform
+    * [ ] Treeview
+* [ ] Invaders
+* [ ] Tutorial
 
-To see how it clicks together you can look at the raylib\*interface files in src:
-* raylibFileInterface.cpp
-* raylibRenderInterface.cpp
-* raylibSystemInterface.cpp
-* raylibRmlUI.cpp
 
-At this time this is only a very simple implementation. It is recommended to give the [documentation](https://mikke89.github.io/RmlUiDoc/pages/cpp_manual.html) a read
-
-There are things like clipboard interaction and a virtual keyboard
-
-RmlUi is able to work inside of Emscripten since 5.0
-
-# Compile
-## Prequisites
-
-After cloning run inside of the cloned folder:
+# Building Examples
 ```bash
 git submodule update --init --recursive
-```
-
-## Build
-```
 cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug
 cmake --build ./build -- -j $(nproc)
 ```
-
-# Run
-Inside the project folder there should now be a bin folder if the compile was successful. Inside that should be a Debug folder. Then run RmlUI_Example(.exe) to see the simple demo
-
-# Example
-
-![image](https://user-images.githubusercontent.com/7228476/229943439-c7ba003e-3041-4ff2-a063-9866c226feda.png)

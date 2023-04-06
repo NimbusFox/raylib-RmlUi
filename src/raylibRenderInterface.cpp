@@ -3,13 +3,14 @@
 #include "raylib.h"
 #include "rlgl.h"
 
+Texture2D defaultTexture;
+Rml::Matrix4f* transform;
+
 void RenderTriangle(Rml::Vertex &vertex, const Rml::Vector2f &translation) {
     rlColor4ub(vertex.colour.red, vertex.colour.green, vertex.colour.blue, vertex.colour.alpha);
     rlTexCoord2f(vertex.tex_coord.x, vertex.tex_coord.y);
     rlVertex2f(vertex.position.x + translation.x, vertex.position.y + translation.y);
 }
-
-Texture2D defaultTexture;
 
 void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) {
     Texture2D target;
@@ -34,6 +35,11 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
     rlBegin(RL_TRIANGLES);
     rlSetTexture(target.id);
 
+    if (transform) {
+        rlPushMatrix();
+        rlMultMatrixf(transform->data());
+    }
+
     for (unsigned int i = 0; i <= (num_indices - 3); i+=3) {
         if (rlCheckRenderBatchLimit(3)) {
             rlBegin(RL_TRIANGLES);
@@ -56,6 +62,10 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
     rlSetTexture(0);
 
     rlEnableBackfaceCulling();
+
+    if (transform) {
+        rlPopMatrix();
+    }
 }
 
 void RaylibRenderInterface::EnableScissorRegion(bool enable) {
@@ -129,4 +139,16 @@ bool RaylibRenderInterface::GenerateTexture(Rml::TextureHandle &texture_handle, 
 
 RaylibRenderInterface::~RaylibRenderInterface() {
     UnloadTexture(defaultTexture);
+}
+
+void RaylibRenderInterface::SetTransform(const Rml::Matrix4f* newTransform) {
+    transform = (Rml::Matrix4f*)newTransform;
+}
+
+void RaylibRenderInterface::BeginFrame() {
+    SetTransform(nullptr);
+}
+
+void RaylibRenderInterface::EndFrame() {
+
 }

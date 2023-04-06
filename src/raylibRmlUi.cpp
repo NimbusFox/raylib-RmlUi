@@ -8,7 +8,7 @@ RaylibFileInterface fileInterface;
 RaylibRenderInterface renderInterface;
 RaylibSystemInterface systemInterface;
 
-Rml::Context* context;
+Rml::Context* RaylibRmlUi::Context;
 std::unordered_map<std::string, Rml::ElementDocument*> documents;
 
 bool RaylibRmlUi::Initialize(int windowWidth, int windowHeight) {
@@ -18,22 +18,20 @@ bool RaylibRmlUi::Initialize(int windowWidth, int windowHeight) {
 
     Rml::Initialise();
 
-    context = Rml::CreateContext("demo", Rml::Vector2i{windowWidth, windowHeight});
+    Context = Rml::CreateContext("demo", Rml::Vector2i{windowWidth, windowHeight});
 
-    if (!context) {
+    if (!Context) {
         Rml::Shutdown();
         return false;
     }
 
-    Rml::Debugger::Initialise(context);
-
-    Rml::LoadFontFace("../../assets/UbuntuMono-Regular.ttf");
-
-    documents["index"] = context->LoadDocument("../../assets/index.rml");
-
-    documents["index"]->Show();
+    Rml::Debugger::Initialise(Context);
 
     return true;
+}
+
+void RaylibRmlUi::LoadFont(const char* path) {
+    Rml::LoadFontFace(path);
 }
 
 void RaylibRmlUi::DeInitialize() {
@@ -60,23 +58,55 @@ void RaylibRmlUi::ToggleDebugger() {
 
 void RaylibRmlUi::Update() {
     auto delta = GetMouseDelta();
-    if (delta.x != 0 || delta.y != 0) {
-        auto mousePos = GetMousePosition();
-
-        context->ProcessMouseMove(mousePos.x, mousePos.y, 0);
-    }
-
     if (IsMouseButtonDown(MouseButton::MOUSE_BUTTON_LEFT)) {
-        context->ProcessMouseButtonDown(0, 0);
+        Context->ProcessMouseButtonDown(0, 0);
     }
 
     if (IsMouseButtonUp(MouseButton::MOUSE_BUTTON_LEFT)) {
-        context->ProcessMouseButtonUp(0, 0);
+        Context->ProcessMouseButtonUp(0, 0);
     }
 
-    context->Update();
+    if (delta.x != 0 || delta.y != 0) {
+        auto mousePos = GetMousePosition();
+
+        Context->ProcessMouseMove(mousePos.x, mousePos.y, 0);
+    }
+
+    systemInterface.HandleKeyboardEvents(Context);
+
+    Context->Update();
 }
 
 void RaylibRmlUi::Draw() {
-    context->Render();
+    renderInterface.BeginFrame();
+    Context->Render();
+    renderInterface.EndFrame();
+}
+
+void RaylibRmlUi::LoadRml(const char* path, const char* id, bool show) {
+    documents[id] = Context->LoadDocument(path);
+
+    if (show) {
+        ShowPage(id);
+    }
+}
+
+void RaylibRmlUi::ShowPage(const char* id) {
+    for (auto& page : documents) {
+        page.second->Hide();
+
+        if (page.first == id) {
+            page.second->Show();
+        }
+    }
+}
+
+Rml::ElementDocument* RaylibRmlUi::GetPage(const char* id) {
+    for (auto& page : documents) {
+        if (page.first == id) {
+            return page.second;
+        }
+    }
+
+    return nullptr;
 }

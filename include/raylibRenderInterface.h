@@ -6,19 +6,25 @@
 
 class RaylibRenderInterface : public Rml::RenderInterface {
 public:
-void RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) override;
+    void RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) override;
 
-void EnableScissorRegion(bool enable) override;
+    void BeginFrame();
 
-void SetScissorRegion(int x, int y, int width, int height) override;
+    void EndFrame();
+    
+    void EnableScissorRegion(bool enable) override;
 
-bool LoadTexture(Rml::TextureHandle &texture_handle, Rml::Vector2i &texture_dimensions, const Rml::String &source) override;
+    void SetScissorRegion(int x, int y, int width, int height) override;
 
-void ReleaseTexture(Rml::TextureHandle texture) override;
+    bool LoadTexture(Rml::TextureHandle &texture_handle, Rml::Vector2i &texture_dimensions, const Rml::String &source) override;
 
-bool GenerateTexture(Rml::TextureHandle &texture_handle, const Rml::byte* source, const Rml::Vector2i &source_dimensions) override;
+    void ReleaseTexture(Rml::TextureHandle texture) override;
 
-~RaylibRenderInterface();
+    bool GenerateTexture(Rml::TextureHandle &texture_handle, const Rml::byte* source, const Rml::Vector2i &source_dimensions) override;
+
+    void SetTransform(const Rml::Matrix4f* transform) override;
+
+    ~RaylibRenderInterface();
 };
 
 #endif //RMLUI_EXAMPLE_RAYLIBRENDERINTERFACE_H

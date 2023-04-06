@@ -1,22 +1,34 @@
 #ifndef RMLUI_EXAMPLE_RAYLIBRMLUI_H
 #define RMLUI_EXAMPLE_RAYLIBRMLUI_H
 
+#include "RmlUi/Core.h"
+
 class RaylibRmlUi {
 private:
 public:
-static bool Initialize(int windowWidth, int windowHeight);
+    static Rml::Context* Context;
 
-static void DeInitialize();
+    static bool Initialize(int windowWidth, int windowHeight);
 
-static void EnableDebugger();
+    static void LoadFont(const char* path);
 
-static void DisableDebugger();
+    static void DeInitialize();
 
-static void ToggleDebugger();
+    static void EnableDebugger();
 
-static void Update();
+    static void DisableDebugger();
 
-static void Draw();
+    static void ToggleDebugger();
+
+    static void LoadRml(const char* path, const char* id, bool show = false);
+
+    static void ShowPage(const char* id);
+
+    static void Update();
+
+    static void Draw();
+
+    static Rml::ElementDocument* GetPage(const char* id);
 };
 
 #endif //RMLUI_EXAMPLE_RAYLIBRMLUI_H

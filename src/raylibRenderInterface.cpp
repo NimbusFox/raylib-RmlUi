@@ -4,17 +4,20 @@
 #include "rlgl.h"
 
 void RenderTriangle(Rml::Vertex &vertex, const Rml::Vector2f &translation) {
-    auto c = Color{vertex.colour.red, vertex.colour.green, vertex.colour.blue, vertex.colour.alpha};
-    rlColor4ub(c.r, c.g, c.b, c.a);
+    rlColor4ub(vertex.colour.red, vertex.colour.green, vertex.colour.blue, vertex.colour.alpha);
     rlTexCoord2f(vertex.tex_coord.x, vertex.tex_coord.y);
     rlVertex2f(vertex.position.x + translation.x, vertex.position.y + translation.y);
 }
 
+Texture2D defaultTexture;
+
 void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) {
+    Texture2D target;
     if (texture == 0) {
-        return;
+        target = defaultTexture;
+    } else {
+        target = *(Texture2D*)texture;
     }
-    auto target = *(Texture2D*)texture;
 
     if (target.id == 0) {
         return;
@@ -52,7 +55,6 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
     rlEnd();
     rlSetTexture(0);
 
-    rlDisableScissorTest();
     rlEnableBackfaceCulling();
 }
 
@@ -84,6 +86,7 @@ bool RaylibRenderInterface::LoadTexture(Rml::TextureHandle &texture_handle, Rml:
 
     texture_dimensions.x = texture.width;
     texture_dimensions.y = texture.height;
+
     return true;
 }
 
@@ -99,6 +102,13 @@ void RaylibRenderInterface::ReleaseTexture(Rml::TextureHandle texture) {
 }
 
 bool RaylibRenderInterface::GenerateTexture(Rml::TextureHandle &texture_handle, const Rml::byte* source, const Rml::Vector2i &source_dimensions) {
+    if (defaultTexture.id == 0) {
+        auto image = GenImageColor(2, 2, WHITE);
+
+        defaultTexture = LoadTextureFromImage(image);
+
+        UnloadImage(image);
+    }
     auto image = GenImageColor(source_dimensions.x, source_dimensions.y, BLANK);
 
     image.data = (void*) source;
@@ -115,4 +125,8 @@ bool RaylibRenderInterface::GenerateTexture(Rml::TextureHandle &texture_handle, 
     texture_handle = (Rml::TextureHandle)allocation;
 
     return true;
+}
+
+RaylibRenderInterface::~RaylibRenderInterface() {
+    UnloadTexture(defaultTexture);
 }

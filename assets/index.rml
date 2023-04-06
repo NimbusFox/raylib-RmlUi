@@ -6,6 +6,6 @@
     <body>
     <img src="raylib_180x180.png"/>
     <div>This is a raylib Demo</div>
-    <div>&lt;a/&gt; is not a valid tag under rml</div>
+    <a>&lt;a/&gt; is not a valid tag under rml</a>
     </body>
 </rml>

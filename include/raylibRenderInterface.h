@@ -17,6 +17,8 @@ bool LoadTexture(Rml::TextureHandle &texture_handle, Rml::Vector2i &texture_dime
 void ReleaseTexture(Rml::TextureHandle texture) override;
 
 bool GenerateTexture(Rml::TextureHandle &texture_handle, const Rml::byte* source, const Rml::Vector2i &source_dimensions) override;
+
+~RaylibRenderInterface();
 };
 
 #endif //RMLUI_EXAMPLE_RAYLIBRENDERINTERFACE_H

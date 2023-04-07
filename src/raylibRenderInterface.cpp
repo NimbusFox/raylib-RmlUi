@@ -1,4 +1,3 @@
-#include <GL/gl.h>
 #include "raylibRenderInterface.h"
 #include "raylibFileInterface.h"
 #include "raylib.h"
@@ -15,8 +14,7 @@ void RenderTriangle(Rml::Vertex &vertex, const Rml::Vector2f &translation) {
     if (transform) {
         auto vec = Vector3{ vertex.position.x + translation.x, vertex.position.y + translation.y, 0 };
         auto dest = Vector3Transform(vec, MatrixTranspose(*(Matrix*)transform->data()));
-        dest.z = 0;
-        rlVertex3f(dest.x, dest.y, dest.z);
+        rlVertex2f(dest.x, dest.y);
     } else {
         rlVertex2f(vertex.position.x + translation.x, vertex.position.y + translation.y);
     }

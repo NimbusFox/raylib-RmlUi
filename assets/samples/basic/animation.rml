@@ -136,7 +136,6 @@
 
             div.plain {
                 font-size: 1.2em;
-                padding: 10 dp;
                 margin: auto;
                 width: 130 dp;
                 height: 70 dp;

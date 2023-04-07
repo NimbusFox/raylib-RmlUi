@@ -6,7 +6,7 @@
 # Examples
 * [ ] Basic
     * [x] Animation
-    * [ ] Benchmark
+    * [x] Benchmark
     * [ ] Bitmapfont
     * [ ] Customlog
     * [ ] Databinding

@@ -2,11 +2,7 @@
 #include "raylibRmlUi.h"
 #include "samples/basic/animation.h"
 #include "samples/event.h"
-
-bool AnimationSample::singleLoop;
-bool AnimationSample::runLoop;
-int AnimationSample::nudge;
-bool AnimationSample::runGame = true;
+#include "samples/sample.h"
 
 Rml::ElementDocument* document;
 
@@ -17,9 +13,9 @@ Rml::Vector2i Example::GetWindowSize() {
 }
 
 void Example::Initialize() {
-    AnimationSample::runLoop = true;
-    AnimationSample::singleLoop = false;
-    AnimationSample::nudge = 0;
+    Sample::runLoop = true;
+    Sample::singleLoop = false;
+    Sample::nudge = 0;
     RaylibRmlUi::Initialize(1700, 900);
 
     RaylibRmlUi::LoadFont("LatoLatin-Bold.ttf");

@@ -1,0 +1,35 @@
+<rml>
+    <head>
+        <link type="text/template" href="../../../assets/window.rml"/>
+        <title>Benchmark Sample</title>
+        <style>
+            body.window {
+                left: 80 dp;
+                right: 80 dp;
+                top: 50 dp;
+                bottom: 50 dp;
+                max-width: 2000 dp;
+                max-height: 2000 dp;
+            }
+
+            #fps {
+                position: absolute;
+                top: 55 dp;
+                left: 20 dp;
+                font-size: 0.85em;
+                text-align: left;
+            }
+
+            #performance {
+                width: 800 dp;
+                height: 300 dp;
+            }
+        </style>
+    </head>
+
+    <body template="window">
+    <div id="fps"/>
+    <div id="click_test"/>
+    <div id="performance"/>
+    </body>
+</rml>

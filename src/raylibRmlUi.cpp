@@ -72,6 +72,8 @@ void RaylibRmlUi::Update() {
         Context->ProcessMouseMove(mousePos.x, mousePos.y, 0);
     }
 
+    Context->ProcessMouseWheel(-GetMouseWheelMove(), 0);
+
     systemInterface.HandleKeyboardEvents(Context);
 
     Context->Update();

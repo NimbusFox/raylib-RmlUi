@@ -1,7 +1,6 @@
 #include "samples/event.h"
-#include "raylib.h"
 #include "raylibRmlUi.h"
-#include "samples/basic/animation.h"
+#include "samples/sample.h"
 
 ExampleEvent::ExampleEvent(const Rml::String &value) : value(value) {}
 
@@ -9,7 +8,7 @@ void ExampleEvent::ProcessEvent(Rml::Event &event) {
     using namespace Rml;
 
     if (value == "exit") {
-        AnimationSample::runGame = false;
+        Sample::runGame = false;
         return;
     }
 
@@ -18,14 +17,14 @@ void ExampleEvent::ProcessEvent(Rml::Event &event) {
             Rml::Input::KeyIdentifier key_identifier = (Rml::Input::KeyIdentifier)event.GetParameter<int>("key_identifier", 0);
 
             if (key_identifier == Rml::Input::KI_SPACE) {
-                AnimationSample::runLoop = !AnimationSample::runLoop;
+                Sample::runLoop = !Sample::runLoop;
             } else if (key_identifier == Rml::Input::KI_RETURN) {
-                AnimationSample::runLoop = false;
-                AnimationSample::singleLoop = true;
+                Sample::runLoop = false;
+                Sample::singleLoop = true;
             } else if (key_identifier == Rml::Input::KI_OEM_PLUS) {
-                AnimationSample::nudge = 1;
+                Sample::nudge = 1;
             } else if (key_identifier == Rml::Input::KI_OEM_MINUS) {
-                AnimationSample::nudge = -1;
+                Sample::nudge = -1;
             } else if (key_identifier == Rml::Input::KI_LEFT) {
                 auto el = RaylibRmlUi::Context->GetRootElement()->GetElementById("keyevent_response");
                 if (el) el->Animate("left", Property{ -200.f, Property::DP }, 0.5, Tween{ Tween::Cubic });

@@ -27,11 +27,13 @@ set(rmlUiFiles
     src/raylibRmlUi.cpp
     src/raylibRenderInterface.cpp
     src/raylibSystemInterface.cpp
+    src/samples/sample.cpp
     )
 
 set(examples
     RmlUI_Example
     RaylibAnimation_Example
+    RaylibBenchmark_Example
     )
 
 set(raylibSource
@@ -43,10 +45,16 @@ set(animationSource
     src/samples/basic/animationEvent.cpp
     )
 
+set(benchmarkSource
+    src/samples/basic/benchmark.cpp
+    src/samples/basic/benchmarkEvent.cpp
+    )
+
 
 set(exampleSources
     raylibSource
     animationSource
+    benchmarkSource
     )
 
 list(LENGTH examples len1)

@@ -1,7 +1,9 @@
+#include <GL/gl.h>
 #include "raylibRenderInterface.h"
 #include "raylibFileInterface.h"
 #include "raylib.h"
 #include "rlgl.h"
+#include "raymath.h"
 
 Texture2D defaultTexture;
 Rml::Matrix4f* transform;
@@ -9,7 +11,15 @@ Rml::Matrix4f* transform;
 void RenderTriangle(Rml::Vertex &vertex, const Rml::Vector2f &translation) {
     rlColor4ub(vertex.colour.red, vertex.colour.green, vertex.colour.blue, vertex.colour.alpha);
     rlTexCoord2f(vertex.tex_coord.x, vertex.tex_coord.y);
-    rlVertex2f(vertex.position.x + translation.x, vertex.position.y + translation.y);
+
+    if (transform) {
+        auto vec = Vector3{ vertex.position.x + translation.x, vertex.position.y + translation.y, 0 };
+        auto dest = Vector3Transform(vec, MatrixTranspose(*(Matrix*)transform->data()));
+        dest.z = 0;
+        rlVertex3f(dest.x, dest.y, dest.z);
+    } else {
+        rlVertex2f(vertex.position.x + translation.x, vertex.position.y + translation.y);
+    }
 }
 
 void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertices, int* indices, int num_indices, Rml::TextureHandle texture, const Rml::Vector2f &translation) {
@@ -35,12 +45,7 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
     rlBegin(RL_TRIANGLES);
     rlSetTexture(target.id);
 
-    if (transform) {
-        rlPushMatrix();
-        rlMultMatrixf(transform->data());
-    }
-
-    for (unsigned int i = 0; i <= (num_indices - 3); i+=3) {
+    for (unsigned int i = 0 ; i <= (num_indices - 3) ; i += 3) {
         if (rlCheckRenderBatchLimit(3)) {
             rlBegin(RL_TRIANGLES);
             rlSetTexture(target.id);
@@ -59,13 +64,10 @@ void RaylibRenderInterface::RenderGeometry(Rml::Vertex* vertices, int num_vertic
         RenderTriangle(vertexC, translation);
     }
     rlEnd();
+
     rlSetTexture(0);
 
     rlEnableBackfaceCulling();
-
-    if (transform) {
-        rlPopMatrix();
-    }
 }
 
 void RaylibRenderInterface::EnableScissorRegion(bool enable) {
@@ -121,7 +123,7 @@ bool RaylibRenderInterface::GenerateTexture(Rml::TextureHandle &texture_handle, 
     }
     auto image = GenImageColor(source_dimensions.x, source_dimensions.y, BLANK);
 
-    image.data = (void*) source;
+    image.data = (void*)source;
 
     auto texture = LoadTextureFromImage(image);
 

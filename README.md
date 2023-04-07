@@ -5,7 +5,7 @@
 
 # Examples
 * [ ] Basic
-    * [ ] Animation 99% done
+    * [x] Animation
     * [ ] Benchmark
     * [ ] Bitmapfont
     * [ ] Customlog

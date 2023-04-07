@@ -34,6 +34,7 @@ set(examples
     RmlUI_Example
     RaylibAnimation_Example
     RaylibBenchmark_Example
+    RaylibBitmapfont_Example
     )
 
 set(raylibSource
@@ -47,14 +48,21 @@ set(animationSource
 
 set(benchmarkSource
     src/samples/basic/benchmark.cpp
-    src/samples/basic/benchmarkEvent.cpp
+    src/samples/exampleEvent.cpp
     )
 
+set (bitmapfontSource
+     src/samples/basic/bitmapfont.cpp
+     src/samples/exampleEvent.cpp
+     src/samples/basic/bitmapfont/fontEngineBitmap.cpp
+     src/samples/basic/bitmapfont/fontEngineInterfaceBitmap.cpp
+     )
 
 set(exampleSources
     raylibSource
     animationSource
     benchmarkSource
+    bitmapfontSource
     )
 
 list(LENGTH examples len1)

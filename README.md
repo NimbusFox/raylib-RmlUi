@@ -7,7 +7,7 @@
 * [ ] Basic
     * [x] Animation
     * [x] Benchmark
-    * [ ] Bitmapfont
+    * [x] Bitmapfont
     * [ ] Customlog
     * [ ] Databinding
     * [ ] Demo

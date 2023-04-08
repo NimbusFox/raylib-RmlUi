@@ -25,7 +25,7 @@ int main() {
 
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
 
         Example::Render();
 

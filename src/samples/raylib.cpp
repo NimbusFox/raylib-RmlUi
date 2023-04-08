@@ -1,5 +1,6 @@
 #include "example.h"
 #include "raylibRmlUi.h"
+#include "samples/sample.h"
 
 Rml::Vector2i Example::GetWindowSize() {
     return Rml::Vector2i{ 1280, 720 };
@@ -31,4 +32,12 @@ void Example::Update(float) {
 
 void Example::Render() {
     RaylibRmlUi::Draw();
+}
+
+bool Example::RunProgram() {
+    return Sample::runGame;
+}
+
+void Example::StopProgram() {
+    Sample::runGame = false;
 }

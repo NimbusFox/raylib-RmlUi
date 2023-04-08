@@ -35,6 +35,7 @@ set(examples
     RaylibAnimation_Example
     RaylibBenchmark_Example
     RaylibBitmapfont_Example
+    RaylibDatabinding_Example
     )
 
 set(raylibSource
@@ -58,11 +59,19 @@ set (bitmapfontSource
      src/samples/basic/bitmapfont/fontEngineInterfaceBitmap.cpp
      )
 
+set (databindingSource
+     src/samples/basic/databinding.cpp
+     src/samples/exampleEvent.cpp
+     src/samples/basic/databinding/basicExample.cpp
+     src/samples/basic/databinding/eventsExample.cpp
+     )
+
 set(exampleSources
     raylibSource
     animationSource
     benchmarkSource
     bitmapfontSource
+    databindingSource
     )
 
 list(LENGTH examples len1)

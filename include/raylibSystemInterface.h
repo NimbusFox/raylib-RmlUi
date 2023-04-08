@@ -13,9 +13,17 @@ public:
 
     Rml::Input::KeyIdentifier ConvertKey(KeyboardKey key);
 
+    int ConvertKeyModifiers();
+
     void HandleKeyboardEvents(Rml::Context* context);
 
-    RaylibSystemInterface();
+    void HandleMouseEvents(Rml::Context* context);
+
+    void GetClipboardText(Rml::String &text) override;
+
+    void SetClipboardText(const Rml::String &text) override;
+
+    void SetMouseCursor(const Rml::String &cursor_name) override;
 };
 
 #endif //RMLUI_EXAMPLE_RAYLIBSYSTEMINTERFACE_H

@@ -10,7 +10,11 @@ Rml::Vector2i Example::GetWindowSize() {
 }
 
 void Example::Initialize() {
-    RaylibRmlUi::Initialize(1800, 1000);
+    Sample::runGame = RaylibRmlUi::Initialize(1800, 1000);
+
+    if (!Sample::runGame) {
+        return;
+    }
 
     RaylibRmlUi::LoadFont("LatoLatin-Bold.ttf");
     RaylibRmlUi::LoadFont("LatoLatin-BoldItalic.ttf");

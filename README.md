@@ -8,8 +8,7 @@
     * [x] Animation
     * [x] Benchmark
     * [x] Bitmapfont
-    * [ ] Customlog
-    * [ ] Databinding
+    * [ ] Databinding 50% done
     * [ ] Demo
     * [ ] Drag
     * [ ] LoadDocuments

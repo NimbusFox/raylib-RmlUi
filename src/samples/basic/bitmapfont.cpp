@@ -15,7 +15,11 @@ void Example::Initialize() {
     fontEngine = Rml::MakeUnique<FontEngineInterfaceBitmap>();
     Rml::SetFontEngineInterface(fontEngine.get());
 
-    RaylibRmlUi::Initialize(1024, 768);
+    Sample::runGame = RaylibRmlUi::Initialize(1024, 768);
+
+    if (!Sample::runGame) {
+        return;
+    }
 
     if (!Rml::LoadFontFace("samples/basic/bitmapfont/Comfortaa_Regular_22.fnt")) {
         Sample::runGame = false;
@@ -50,7 +54,6 @@ void Example::Update(float delta) {
 }
 
 void Example::Render() {
-
     RaylibRmlUi::Draw();
 }
 

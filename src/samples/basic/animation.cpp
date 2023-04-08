@@ -1,6 +1,5 @@
 #include "example.h"
 #include "raylibRmlUi.h"
-#include "samples/basic/animation.h"
 #include "samples/event.h"
 #include "samples/sample.h"
 
@@ -136,9 +135,9 @@ void Example::Render() {
 }
 
 bool Example::RunProgram() {
-    return AnimationSample::runGame;
+    return Sample::runGame;
 }
 
 void Example::StopProgram() {
-    AnimationSample::runGame = false;
+    Sample::runGame = false;
 }

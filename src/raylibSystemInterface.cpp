@@ -3,6 +3,7 @@
 #include <map>
 
 static std::map<KeyboardKey, Rml::Input::KeyIdentifier> keyMap;
+double timer = 0.0;
 
 bool initialized = false;
 
@@ -12,8 +13,6 @@ void Initialize() {
     }
 
     initialized = true;
-
-    //keyMap.emplace(KEY_COMMA, Rml::Input::KI_OEM_COMMA);
 
     keyMap[KEY_COMMA] = Rml::Input::KI_OEM_COMMA;
     keyMap[KEY_APOSTROPHE] = Rml::Input::KI_OEM_7;
@@ -162,19 +161,101 @@ Rml::Input::KeyIdentifier RaylibSystemInterface::ConvertKey(KeyboardKey key) {
     return Rml::Input::KI_UNKNOWN;
 }
 
+int RaylibSystemInterface::ConvertKeyModifiers() {
+    int keyModifier = 0;
+
+    if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
+        keyModifier |= Rml::Input::KM_SHIFT;
+    }
+
+    if (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) {
+        keyModifier |= Rml::Input::KM_CTRL;
+    }
+
+    if (IsKeyDown(KEY_LEFT_ALT) || IsKeyDown(KEY_RIGHT_ALT)) {
+        keyModifier |= Rml::Input::KM_ALT;
+    }
+
+    if (IsKeyDown(KEY_CAPS_LOCK)) {
+        keyModifier |= Rml::Input::KI_CAPITAL;
+    }
+
+    if (IsKeyDown(KEY_SCROLL_LOCK)) {
+        keyModifier |= Rml::Input::KI_SCROLL;
+    }
+
+    if (IsKeyDown(KEY_NUM_LOCK)) {
+        keyModifier |= Rml::Input::KI_NUMLOCK;
+    }
+
+    return keyModifier;
+}
+
 void RaylibSystemInterface::HandleKeyboardEvents(Rml::Context* context) {
     Initialize();
+    auto delta = GetFrameTime();
+
+    if (timer > 0) {
+        timer -= delta;
+    }
+
     for (auto &key: keyMap) {
-        if (IsKeyDown(key.first)) {
-            context->ProcessKeyDown(key.second, 0);
-            continue;
+        if (IsKeyPressed(key.first)) {
+            context->ProcessKeyDown(key.second, ConvertKeyModifiers());
+            timer = 0.5;
+            break;
         }
 
-        if (IsKeyUp(key.first)) {
-            context->ProcessKeyUp(key.second, 0);
+        if (IsKeyDown(key.first) && timer <= 0) {
+            context->ProcessKeyDown(key.second, ConvertKeyModifiers());
         }
+
+        if (IsKeyReleased(key.first)) {
+            context->ProcessKeyUp(key.second, ConvertKeyModifiers());
+            timer = 0.5;
+        }
+    }
+
+    auto input = GetCharPressed();
+
+    if (input != 0) {
+        context->ProcessTextInput(input);
+        input = GetCharPressed();
     }
 }
 
-RaylibSystemInterface::RaylibSystemInterface() : Rml::SystemInterface() {
+void RaylibSystemInterface::HandleMouseEvents(Rml::Context* context) {
+    if (IsMouseButtonPressed(MouseButton::MOUSE_BUTTON_LEFT)) {
+        context->ProcessMouseButtonDown(0, 0);
+    }
+
+    if (IsMouseButtonReleased(MouseButton::MOUSE_BUTTON_LEFT)) {
+        context->ProcessMouseButtonUp(0, 0);
+    }
+}
+
+void RaylibSystemInterface::GetClipboardText(Rml::String &text) {
+    text = ::GetClipboardText();
+}
+
+void RaylibSystemInterface::SetClipboardText(const Rml::String &text) {
+    ::SetClipboardText(text.c_str());
+}
+
+void RaylibSystemInterface::SetMouseCursor(const Rml::String &cursor_name) {
+    if (cursor_name.empty() || cursor_name == "arrow") {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_ARROW);
+    } else if (cursor_name == "move" || cursor_name == "pointer") {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_POINTING_HAND);
+    } else if (cursor_name == "resize") {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_RESIZE_ALL);
+    } else if (cursor_name == "cross") {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_CROSSHAIR);
+    } else if (cursor_name == "text") {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_IBEAM);
+    } else if (cursor_name == "unavailable") {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_NOT_ALLOWED);
+    } else if (Rml::StringUtilities::StartsWith(cursor_name, "rmlui-scroll")) {
+        ::SetMouseCursor(MouseCursor::MOUSE_CURSOR_ARROW);
+    }
 }

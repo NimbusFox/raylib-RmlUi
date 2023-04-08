@@ -3,6 +3,9 @@
 #include "raylibSystemInterface.h"
 #include "raylibRenderInterface.h"
 #include "raylib.h"
+#include "GLFW/glfw3.h"
+
+extern void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 RaylibFileInterface fileInterface;
 RaylibRenderInterface renderInterface;
@@ -58,19 +61,14 @@ void RaylibRmlUi::ToggleDebugger() {
 
 void RaylibRmlUi::Update() {
     auto delta = GetMouseDelta();
-    if (IsMouseButtonDown(MouseButton::MOUSE_BUTTON_LEFT)) {
-        Context->ProcessMouseButtonDown(0, 0);
-    }
-
-    if (IsMouseButtonUp(MouseButton::MOUSE_BUTTON_LEFT)) {
-        Context->ProcessMouseButtonUp(0, 0);
-    }
 
     if (delta.x != 0 || delta.y != 0) {
         auto mousePos = GetMousePosition();
 
         Context->ProcessMouseMove(mousePos.x, mousePos.y, 0);
     }
+
+    systemInterface.HandleMouseEvents(Context);
 
     Context->ProcessMouseWheel(-GetMouseWheelMove(), 0);
 

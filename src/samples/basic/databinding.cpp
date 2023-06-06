@@ -5,6 +5,8 @@
 
 #include "samples/basic/databinding/basicExample.h"
 #include "samples/basic/databinding/eventsExample.h"
+#include "samples/basic/databinding/invadersExample.h"
+#include "samples/basic/databinding/formsExample.h"
 
 Rml::ElementDocument* document;
 
@@ -29,7 +31,9 @@ void Example::Initialize() {
     Rml::Factory::RegisterEventListenerInstancer(&eventListenerInstancer);
 
     if (!BasicExample::Initialize(RaylibRmlUi::Context)
-    || !EventsExample::Initialize(RaylibRmlUi::Context)) {
+    || !EventsExample::Initialize(RaylibRmlUi::Context)
+    || !InvadersExample::Initialize(RaylibRmlUi::Context)
+    || !FormsExample::Initialize(RaylibRmlUi::Context)) {
         Sample::runGame = false;
         return;
     }
@@ -55,6 +59,7 @@ void Example::ToggleDebugger() {
 
 void Example::Update(float delta) {
     EventsExample::Update();
+    InvadersExample::Update(delta);
     RaylibRmlUi::Update();
 }
 

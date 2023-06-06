@@ -15,8 +15,8 @@ include_directories(
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/)
 
-set(SUPPORT_FILEFORMAT_TGA ON CACHE INTERNAL "" FORCE)
 set(CUSTOMIZE_BUILD ON)
+set(SUPPORT_FILEFORMAT_TGA ON CACHE INTERNAL "" FORCE)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/raylib)
 
@@ -64,6 +64,8 @@ set (databindingSource
      src/samples/exampleEvent.cpp
      src/samples/basic/databinding/basicExample.cpp
      src/samples/basic/databinding/eventsExample.cpp
+     src/samples/basic/databinding/invadersExample.cpp
+     src/samples/basic/databinding/formsExample.cpp
      )
 
 set(exampleSources

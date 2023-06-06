@@ -5,7 +5,7 @@
 
 Rml::ElementDocument* document;
 
-float timer = 1.4f;
+float animationTimer = 1.4f;
 
 Rml::Vector2i Example::GetWindowSize() {
     return Rml::Vector2i{ 1700, 900 };
@@ -111,8 +111,8 @@ void Example::ToggleDebugger() {
 }
 
 void Example::Update(float delta) {
-        timer -= delta;
-        while (timer < 0.0f) {
+    animationTimer -= delta;
+        while (animationTimer < 0.0f) {
             auto el = document->GetElementById("help");
             if (el->IsClassSet("fadeout")) {
                 el->SetClass("fadeout", false);
@@ -125,7 +125,7 @@ void Example::Update(float delta) {
                 el->SetClass("fadeout", true);
             }
 
-            timer += 1.4f;
+            animationTimer += 1.4f;
         }
     RaylibRmlUi::Update();
 }

@@ -37,7 +37,7 @@ struct FontMetrics {
 using FontGlyphs = Rml::UnorderedMap<Character, BitmapGlyph>;
 
 // Mapping of combined (left, right) character to kerning in pixels.
-using FontKerning = Rml::UnorderedMap<std::uint64_t, int>;
+using FontKerning = Rml::UnorderedMap<uint64_t, int>;
 
 
 class FontFaceBitmap {
